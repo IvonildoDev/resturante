@@ -13,8 +13,25 @@
 
 <body>
     <header>
-        <h1>Cardápio Digital - Mesa <span id="mesa">1</span></h1>
-        <p>Horário: <span id="horario"></span></p>
+        <div class="header-content">
+            <h1>Cardápio Digital</h1>
+            <div class="mesa-selector">
+                <label for="mesa-select">Mesa:</label>
+                <select id="mesa-select" onchange="mudarMesa(this.value)">
+                    <option value="1">Mesa 1</option>
+                    <option value="2">Mesa 2</option>
+                    <option value="3">Mesa 3</option>
+                    <option value="4">Mesa 4</option>
+                    <option value="5">Mesa 5</option>
+                    <option value="6">Mesa 6</option>
+                    <option value="7">Mesa 7</option>
+                    <option value="8">Mesa 8</option>
+                    <option value="9">Mesa 9</option>
+                    <option value="10">Mesa 10</option>
+                </select>
+            </div>
+            <p>Horário: <span id="horario"></span></p>
+        </div>
     </header>
 
     <div class="menu-container">

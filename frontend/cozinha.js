@@ -1,7 +1,7 @@
 // Configurações globais
 const CONFIG = {
     apiUrl: '../backend/pedidos.php',
-    refreshInterval: 30000, // Atualizar a cada 30 segundos
+    refreshInterval: 60000, // Atualizar a cada 1 minuto
     statusInfo: {
         pendente: {
             next: 'preparando',
@@ -30,20 +30,33 @@ document.addEventListener('DOMContentLoaded', function () {
     carregarPedidos();
 
     // Configurar atualização automática
-    setInterval(carregarPedidos, CONFIG.refreshInterval);
+    let refreshInterval = setInterval(carregarPedidos, CONFIG.refreshInterval);
 
     // Configurar botão de atualização manual
-    document.getElementById('refresh-btn').addEventListener('click', carregarPedidos);
+    document.getElementById('refresh-btn').addEventListener('click', function () {
+        // Limpar o intervalo existente para evitar sobreposição
+        clearInterval(refreshInterval);
+
+        // Carregar pedidos imediatamente
+        carregarPedidos();
+
+        // Reiniciar o intervalo após a atualização manual
+        refreshInterval = setInterval(carregarPedidos, CONFIG.refreshInterval);
+    });
 });
 
-// Função para carregar pedidos do servidor
+// Função para carregar pedidos do servidor com indicador visual
 async function carregarPedidos() {
+    // Mostrar indicador de atualização
+    const refreshBtn = document.getElementById('refresh-btn');
+    if (refreshBtn) {
+        refreshBtn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Atualizando...';
+        refreshBtn.disabled = true;
+    }
+
     try {
         const response = await fetch(CONFIG.apiUrl);
         const pedidos = await response.json();
-
-        // Log para verificar os dados recebidos
-        console.log("Pedidos recebidos do servidor:", pedidos);
 
         // Limpar listas existentes
         document.getElementById('pendente-list').innerHTML = '';
@@ -84,9 +97,34 @@ async function carregarPedidos() {
         document.getElementById('preparando-count').textContent = contagemStatus.preparando;
         document.getElementById('pronto-count').textContent = contagemStatus.pronto;
 
+        // Atualizar a hora da última atualização
+        const agora = new Date();
+        const horaFormatada = agora.getHours().toString().padStart(2, '0');
+        const minutosFormatados = agora.getMinutes().toString().padStart(2, '0');
+        const segundosFormatados = agora.getSeconds().toString().padStart(2, '0');
+
+        if (document.getElementById('ultima-atualizacao')) {
+            document.getElementById('ultima-atualizacao').textContent =
+                `${horaFormatada}:${minutosFormatados}:${segundosFormatados}`;
+        }
+
     } catch (error) {
         console.error('Erro ao carregar pedidos:', error);
         mostrarNotificacao('Erro ao carregar pedidos. Verifique sua conexão.', 'error');
+    } finally {
+        // Restaurar o botão de atualização
+        if (refreshBtn) {
+            refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Atualizar';
+            refreshBtn.disabled = false;
+        }
+
+        // Reiniciar a animação de progresso
+        const progressBar = document.querySelector('.refresh-progress');
+        if (progressBar) {
+            progressBar.style.animation = 'none';
+            progressBar.offsetHeight; // Trigger reflow
+            progressBar.style.animation = 'progressAnimation 60s linear infinite';
+        }
     }
 }
 
@@ -122,7 +160,7 @@ function criarCardPedido(pedido) {
 
     pedidoCard.innerHTML = `
         <div class="pedido-header">
-            <span class="mesa">Mesa ${pedido.mesa}</span>
+            <span class="mesa-badge">Mesa ${pedido.mesa}</span>
             <span class="tempo">${tempoFormatado}</span>
         </div>
         <div class="pedido-content">

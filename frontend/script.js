@@ -508,15 +508,21 @@ function removerItem(index) {
     mostrarNotificacao('Item removido do pedido');
 }
 
-// Função para mostrar o carrinho/pedido atual
+// Atualizar a função mostrarCarrinho para mostrar a mesa atual
 function mostrarCarrinho() {
     const carrinhoDiv = document.getElementById('carrinho-itens');
     if (!carrinhoDiv) return;
 
     carrinhoDiv.innerHTML = '';
 
+    // Adicionar informação da mesa ao topo
+    const mesaInfo = document.createElement('div');
+    mesaInfo.className = 'mesa-info';
+    mesaInfo.innerHTML = `<i class="fas fa-utensils"></i> Mesa ${mesaAtual}`;
+    carrinhoDiv.appendChild(mesaInfo);
+
     if (pedidos.length === 0) {
-        carrinhoDiv.innerHTML = '<p class="carrinho-vazio">Seu pedido está vazio</p>';
+        carrinhoDiv.innerHTML += '<p class="carrinho-vazio">Seu pedido está vazio</p>';
         return;
     }
 
@@ -687,4 +693,134 @@ async function carregarMenu() {
         menuCache = await response.json();
     }
     return menuCache;
+}
+
+// Variáveis para controle de mesas
+let mesaAtual = 1;
+const pedidosPorMesa = {};
+
+// Função para inicializar o sistema com carregamento de mesa
+document.addEventListener('DOMContentLoaded', function () {
+    // Verificar se há uma mesa salva anteriormente
+    const mesaSalva = localStorage.getItem('mesaAtual');
+    if (mesaSalva) {
+        mesaAtual = parseInt(mesaSalva);
+        document.getElementById('mesa-select').value = mesaAtual;
+    }
+
+    // Inicializar pedidos da mesa atual
+    if (!pedidosPorMesa[mesaAtual]) {
+        pedidosPorMesa[mesaAtual] = [];
+    }
+
+    // Transferir para a variável global de pedidos
+    pedidos = pedidosPorMesa[mesaAtual];
+
+    // Atualizar a interface
+    atualizarCardapio();
+    atualizarContador();
+    atualizarHorario();
+
+    // Resto do código de inicialização...
+});
+
+// Função para mudar de mesa
+function mudarMesa(novaMesa) {
+    // Salvar os pedidos da mesa atual
+    pedidosPorMesa[mesaAtual] = [...pedidos];
+
+    // Atualizar mesa atual
+    mesaAtual = parseInt(novaMesa);
+
+    // Salvar no localStorage para persistir entre recargas
+    localStorage.setItem('mesaAtual', mesaAtual);
+
+    // Inicializar pedidos da nova mesa se não existirem
+    if (!pedidosPorMesa[mesaAtual]) {
+        pedidosPorMesa[mesaAtual] = [];
+    }
+
+    // Atualizar pedidos com os da nova mesa
+    pedidos = pedidosPorMesa[mesaAtual];
+
+    // Atualizar a interface
+    atualizarContador();
+    mostrarCarrinho();
+
+    // Fechar o carrinho se estiver aberto
+    const carrinhoContainer = document.getElementById('carrinho-container');
+    if (carrinhoContainer && carrinhoContainer.classList.contains('mostrar')) {
+        toggleCarrinho();
+    }
+
+    // Mostrar notificação
+    mostrarNotificacao(`Mesa alterada para: Mesa ${mesaAtual}`);
+}
+
+// Modificar a função enviarPedido para usar a mesa atual
+async function enviarPedido() {
+    if (pedidos.length === 0) {
+        alert('Adicione itens ao pedido primeiro!');
+        return;
+    }
+
+    // Desabilitar o botão de enviar para evitar cliques múltiplos
+    const sendButton = document.querySelector('.send-order');
+    if (sendButton) {
+        sendButton.disabled = true;
+        sendButton.textContent = 'Enviando...';
+    }
+
+    let todosPedidosEnviados = true;
+
+    try {
+        for (let pedido of pedidos) {
+            const data = {
+                mesa: mesaAtual,  // Usar a mesa atual em vez de ler do HTML
+                item_id: pedido.id,
+                quantidade: pedido.quantidade,
+                personalizacao: pedido.personalizacao || ''
+            };
+
+            const response = await fetch('../backend/pedidos.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (!result.success) {
+                alert(result.error || 'Erro ao enviar pedido');
+                todosPedidosEnviados = false;
+                break;
+            }
+        }
+
+        if (todosPedidosEnviados) {
+            mostrarNotificacao(`Pedido da Mesa ${mesaAtual} enviado com sucesso!`);
+
+            // Limpar os pedidos após enviar com sucesso
+            pedidos = [];
+            pedidosPorMesa[mesaAtual] = [];
+
+            atualizarContador();
+            mostrarCarrinho();
+
+            // Se há um carrinho visível, feche-o
+            const carrinhoContainer = document.getElementById('carrinho-container');
+            if (carrinhoContainer && carrinhoContainer.classList.contains('mostrar')) {
+                toggleCarrinho();
+            }
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao comunicar com o servidor');
+    } finally {
+        // Reativar o botão independentemente do resultado
+        if (sendButton) {
+            sendButton.disabled = false;
+            sendButton.textContent = 'Enviar Pedido';
+        }
+    }
 }

@@ -51,6 +51,55 @@ header p {
     opacity: 0.9;
 }
 
+/* Estilo para o header e seletor de mesa */
+.header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mesa-selector {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 8px 15px;
+    border-radius: 25px;
+}
+
+.mesa-selector label {
+    margin-right: 10px;
+    font-weight: 600;
+    color: white;
+}
+
+#mesa-select {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 5px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="6"><path d="M0,0L6,6L12,0" fill="white"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 5px center;
+    padding-right: 25px;
+}
+
+#mesa-select:focus {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#mesa-select option {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 5px;
+}
+
 /* Menu Container */
 .menu-container {
     max-width: 1000px;
@@ -699,4 +748,20 @@ header p {
 
 .btn-confirmar:hover {
     background-color: #e05a29;
+}
+
+.mesa-info {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mesa-info i {
+    font-size: 1.1rem;
 }

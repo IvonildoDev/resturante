@@ -74,6 +74,11 @@ body.cozinha-page {
     background-color: #e05a29;
 }
 
+/* Botão de refresh com animação */
+.btn-refresh .fa-spin {
+    animation-duration: 0.7s;
+}
+
 .btn-outline {
     border: 1px solid var(--light-text);
     background: transparent;
@@ -347,4 +352,61 @@ body.cozinha-page {
 
 .kitchen-notification {
     animation: slideIn 0.3s, fadeOut 0.5s 2.5s forwards;
+}
+
+.mesa-badge {
+    font-weight: 700;
+    color: var(--secondary);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 4px 12px;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.mesa-badge::before {
+    content: "\f2e7";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+}
+
+/* Indicador de última atualização */
+.ultima-atualizacao-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    font-size: 0.9rem;
+    gap: 5px;
+}
+
+#ultima-atualizacao {
+    font-weight: 600;
+}
+
+.auto-refresh-indicator {
+    height: 3px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.refresh-progress {
+    height: 100%;
+    width: 0%;
+    background-color: var(--primary);
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition: width 1s linear;
+    animation: progressAnimation 60s linear infinite;
+}
+
+@keyframes progressAnimation {
+    0% { width: 0%; }
+    100% { width: 100%; }
 }
