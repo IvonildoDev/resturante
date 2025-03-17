@@ -42,6 +42,9 @@ async function carregarPedidos() {
         const response = await fetch(CONFIG.apiUrl);
         const pedidos = await response.json();
 
+        // Log para verificar os dados recebidos
+        console.log("Pedidos recebidos do servidor:", pedidos);
+
         // Limpar listas existentes
         document.getElementById('pendente-list').innerHTML = '';
         document.getElementById('preparando-list').innerHTML = '';
@@ -99,6 +102,21 @@ function criarCardPedido(pedido) {
     const minutosFormatados = dataHora.getMinutes().toString().padStart(2, '0');
     const tempoFormatado = `${horaFormatada}:${minutosFormatados}`;
 
+    // Verificar se há personalizações
+    let personalizacaoHTML = '';
+    if (pedido.personalizacao && pedido.personalizacao.trim() !== '') {
+        personalizacaoHTML = `
+            <div class="pedido-personalizacao">
+                <div class="personalizacao-titulo">
+                    <i class="fas fa-sliders-h"></i> Personalizações:
+                </div>
+                <div class="personalizacao-detalhes">
+                    ${pedido.personalizacao}
+                </div>
+            </div>
+        `;
+    }
+
     // Obter informações do próximo status
     const statusInfo = CONFIG.statusInfo[pedido.status];
 
@@ -111,6 +129,7 @@ function criarCardPedido(pedido) {
             <div class="pedido-detalhes">
                 <h3>${pedido.nome}</h3>
                 <div class="pedido-quantidade">Quantidade: ${pedido.quantidade}</div>
+                ${personalizacaoHTML}
             </div>
         </div>
         <div class="pedido-acoes">

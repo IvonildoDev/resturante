@@ -101,7 +101,8 @@
                     <h3>Suco de Caju</h3>
                     <p>Suco natural de caju</p>
                     <span class="price">R$ 7,00</span>
-                    <button class="order-btn" data-id="6" data-name="Suco de Caju" data-price="7.00">
+                    <button class="order-btn" data-id="6" data-name="Suco de Caju" data-price="7.00"
+                        data-categoria="suco">
                         <i class="fas fa-plus"></i> Adicionar
                     </button>
                 </div>
@@ -136,6 +137,32 @@
 
     <!-- Botão do Carrinho Flutuante -->
     <div class="cart-count" id="cart-count" onclick="toggleCarrinho()">0</div>
+
+    <!-- Modal de Personalização -->
+    <div id="modal-personalizacao" class="modal-personalizacao">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Personalizar <span id="item-nome-personalizar"></span></h3>
+                <button class="btn-fechar-modal" onclick="fecharModalPersonalizacao()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Opções de personalização serão adicionadas dinamicamente -->
+                <div id="opcoes-personalizacao"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-cancelar" onclick="fecharModalPersonalizacao()">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button class="btn-confirmar" onclick="confirmarPersonalizacao()">
+                    <i class="fas fa-check"></i> Adicionar ao Pedido
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

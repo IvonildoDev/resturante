@@ -45,43 +45,230 @@ function verificarDisponibilidadeHorario(categoria) {
     return true; // Bebidas e outros itens disponíveis em ambos os períodos
 }
 
-// Função para adicionar um pedido
-function adicionarPedido(id, nome, preco, categoria) {
-    // Código de depuração
-    console.log("Tentando adicionar:", {
-        id, nome, preco, categoria,
-        hora: new Date().getHours(),
-        ehNoite: (new Date().getHours() >= 18 || new Date().getHours() < 6),
-        disponivel: verificarDisponibilidadeHorario(categoria)
-    });
+// Adicione essas variáveis e funções ao seu script.js
 
-    // Verificar se o item está disponível no horário atual
-    if (!verificarDisponibilidadeHorario(categoria)) {
-        mostrarNotificacao(`${nome} não está disponível neste horário`, 'erro');
-        return;
+let itemAtualPersonalizacao = null;
+let personalizacaoSelecionada = {};
+
+// Definição das opções de personalização para cada tipo de item
+const opcoesPersonalizacao = {
+    'nordestino': [
+        {
+            titulo: 'Tipo de Feijão',
+            tipo: 'radio',
+            opcoes: ['Carioca', 'Tropeiro',],
+            padrao: 'Carioca'
+        },
+        {
+            titulo: 'Tipo de Arroz',
+            tipo: 'radio',
+            opcoes: ['Branco', 'agrega',],
+            padrao: 'Branco'
+        },
+        {
+            titulo: 'Adicionar',
+            tipo: 'checkbox',
+            opcoes: ['Macarrão', 'Salada', 'Maionese', 'Farofa'],
+            padrao: []
+        }
+    ],
+    'pizza': [
+        {
+            titulo: 'Borda',
+            tipo: 'radio',
+            opcoes: ['Comum', 'Recheada com Catupiry', 'Recheada com Cheddar'],
+            padrao: 'Comum'
+        },
+        {
+            titulo: 'Ponto da Massa',
+            tipo: 'radio',
+            opcoes: ['Média', 'Fina', 'Grossa'],
+            padrao: 'Média'
+        },
+        {
+            titulo: 'Adicionar',
+            tipo: 'checkbox',
+            opcoes: ['Mais Queijo', 'Orégano Extra', 'Azeite'],
+            padrao: []
+        }
+    ],
+    'suco': [
+        {
+            titulo: 'Adoçante (para sucos)',
+            tipo: 'radio',
+            opcoes: ['Açúcar', 'Adoçante', 'Sem Açúcar'],
+            padrao: 'Açúcar'
+        },
+        {
+            titulo: 'Temperatura',
+            tipo: 'radio',
+            opcoes: ['Gelada', 'Natural',],
+            padrao: 'Gelada'
+        }
+    ],
+    'refrigerante': [
+        {
+            titulo: 'Tipo',
+            tipo: 'radio',
+            opcoes: ['Normal', 'Zero',],
+            padrao: 'Normal'
+        },
+        {
+            titulo: 'Temperatura',
+            tipo: 'radio',
+            opcoes: ['Gelada', 'Natural',],
+            padrao: 'Gelada'
+        }
+    ],
+    'bebida': [
+        {
+            titulo: 'Temperatura',
+            tipo: 'radio',
+            opcoes: ['Gelada', 'Natural', 'Com Gelo e limão',],
+            padrao: 'Gelada'
+        }
+    ]
+};
+
+// Modificar a função de adicionarPedido para abrir o modal de personalização
+function adicionarPedido(id, nome, preco, categoria) {
+    // Se for um item que precisa de personalização, abrir o modal
+    if (categoriaTemPersonalizacao(categoria)) {
+        abrirModalPersonalizacao(id, nome, preco, categoria);
+    } else {
+        // Caso contrário, adicionar diretamente (comportamento atual)
+        adicionarPedidoAoCarrinho(id, nome, preco, categoria);
+    }
+}
+
+// Função para verificar se uma categoria tem opções de personalização
+function categoriaTemPersonalizacao(categoria) {
+    return opcoesPersonalizacao.hasOwnProperty(categoria);
+}
+
+// Função para abrir o modal de personalização
+function abrirModalPersonalizacao(id, nome, preco, categoria) {
+    itemAtualPersonalizacao = { id, nome, preco, categoria };
+    personalizacaoSelecionada = {}; // Resetar seleções anteriores
+
+    // Atualizar o título do modal
+    document.getElementById('item-nome-personalizar').textContent = nome;
+
+    // Limpar e preencher as opções de personalização
+    const opcoesContainer = document.getElementById('opcoes-personalizacao');
+    opcoesContainer.innerHTML = '';
+
+    if (opcoesPersonalizacao[categoria]) {
+        opcoesPersonalizacao[categoria].forEach(grupo => {
+            const grupoDiv = document.createElement('div');
+            grupoDiv.className = 'opcao-grupo';
+
+            const titulo = document.createElement('div');
+            titulo.className = 'opcao-titulo';
+            titulo.textContent = grupo.titulo;
+            grupoDiv.appendChild(titulo);
+
+            const listaOpcoes = document.createElement('div');
+            listaOpcoes.className = 'opcao-lista';
+
+            // Inicializar o grupo no objeto de personalização
+            personalizacaoSelecionada[grupo.titulo] = Array.isArray(grupo.padrao) ? [...grupo.padrao] : grupo.padrao;
+
+            grupo.opcoes.forEach(opcao => {
+                const opcaoItem = document.createElement('div');
+                opcaoItem.className = 'opcao-item';
+                if (grupo.tipo === 'radio' && opcao === grupo.padrao) {
+                    opcaoItem.classList.add('selecionado');
+                }
+                opcaoItem.textContent = opcao;
+
+                // Adicionar evento de clique para selecionar/desselecionar
+                opcaoItem.addEventListener('click', () => {
+                    if (grupo.tipo === 'radio') {
+                        // Para opções de rádio, apenas uma opção pode ser selecionada
+                        const itens = listaOpcoes.querySelectorAll('.opcao-item');
+                        itens.forEach(i => i.classList.remove('selecionado'));
+                        opcaoItem.classList.add('selecionado');
+                        personalizacaoSelecionada[grupo.titulo] = opcao;
+                    } else if (grupo.tipo === 'checkbox') {
+                        // Para checkboxes, múltiplas opções podem ser selecionadas
+                        opcaoItem.classList.toggle('selecionado');
+
+                        if (opcaoItem.classList.contains('selecionado')) {
+                            if (!personalizacaoSelecionada[grupo.titulo].includes(opcao)) {
+                                personalizacaoSelecionada[grupo.titulo].push(opcao);
+                            }
+                        } else {
+                            personalizacaoSelecionada[grupo.titulo] = personalizacaoSelecionada[grupo.titulo].filter(i => i !== opcao);
+                        }
+                    }
+                });
+
+                listaOpcoes.appendChild(opcaoItem);
+            });
+
+            grupoDiv.appendChild(listaOpcoes);
+            opcoesContainer.appendChild(grupoDiv);
+        });
     }
 
-    // Verificar se o item já está no carrinho
-    const itemIndex = pedidos.findIndex(p => p.nome === nome);
+    // Mostrar o modal
+    document.getElementById('modal-personalizacao').classList.add('show');
+}
+
+// Função para fechar o modal de personalização
+function fecharModalPersonalizacao() {
+    document.getElementById('modal-personalizacao').classList.remove('show');
+    itemAtualPersonalizacao = null;
+}
+
+// Função para confirmar a personalização e adicionar ao pedido
+function confirmarPersonalizacao() {
+    if (itemAtualPersonalizacao) {
+        const { id, nome, preco, categoria } = itemAtualPersonalizacao;
+
+        // Criar uma descrição das personalizações
+        let descricaoPersonalizacao = '';
+        for (const [chave, valor] of Object.entries(personalizacaoSelecionada)) {
+            if (Array.isArray(valor) && valor.length > 0) {
+                descricaoPersonalizacao += `${chave}: ${valor.join(', ')}. `;
+            } else if (!Array.isArray(valor) && valor) {
+                descricaoPersonalizacao += `${chave}: ${valor}. `;
+            }
+        }
+
+        // Adicionar ao pedido com a personalização
+        adicionarPedidoAoCarrinho(id, nome, preco, categoria, descricaoPersonalizacao);
+
+        // Fechar o modal
+        fecharModalPersonalizacao();
+    }
+}
+
+// Renomear a função original para adicionarPedidoAoCarrinho
+function adicionarPedidoAoCarrinho(id, nome, preco, categoria, personalizacao = '') {
+    // Verificar se o item já está no carrinho (com a mesma personalização)
+    const itemIndex = pedidos.findIndex(p =>
+        p.nome === nome && p.personalizacao === personalizacao
+    );
 
     if (itemIndex >= 0) {
-        // Se já existe, aumenta a quantidade
         pedidos[itemIndex].quantidade++;
     } else {
-        // Se não existe, adiciona novo item
         pedidos.push({
             id: id,
             nome: nome,
             preco: parseFloat(preco),
             quantidade: 1,
-            categoria: categoria // Armazenar a categoria para verificação posterior
+            categoria: categoria,
+            personalizacao: personalizacao
         });
     }
 
     // Atualizar contador e mostrar o carrinho
     atualizarContador();
     mostrarCarrinho();
-    toggleCarrinho(); // Mostra o carrinho ao adicionar um item
+    toggleCarrinho();
 
     // Efeito visual de confirmação
     mostrarNotificacao(`${nome} adicionado ao pedido!`);
@@ -136,7 +323,8 @@ async function enviarPedido() {
             const data = {
                 mesa: parseInt(mesa),
                 item_id: pedido.id,
-                quantidade: pedido.quantidade
+                quantidade: pedido.quantidade,
+                personalizacao: pedido.personalizacao || '' // Incluir a personalização
             };
 
             const response = await fetch('../backend/pedidos.php', {
@@ -156,7 +344,6 @@ async function enviarPedido() {
 
         if (todosPedidosEnviados) {
             mostrarNotificacao('Pedido enviado com sucesso!');
-            // Limpar os pedidos somente se todos foram enviados com sucesso
             pedidos = [];
             atualizarContador();
             mostrarCarrinho();
@@ -223,6 +410,17 @@ function carregarPedidosCozinha() {
                 // Caminho da imagem, garantindo que seja relativo ou absoluto conforme necessário
                 const imgSrc = pedido.imagem ? `../img/${pedido.imagem}` : '../img/placeholder.png';
 
+                // Verificar se há personalizações
+                let personalizacaoHTML = '';
+                if (pedido.personalizacao && pedido.personalizacao.trim() !== '') {
+                    personalizacaoHTML = `
+                        <div class="personalizacao">
+                            <div class="personalizacao-titulo">Personalização:</div>
+                            <div class="personalizacao-detalhes">${pedido.personalizacao}</div>
+                        </div>
+                    `;
+                }
+
                 card.innerHTML = `
                     <div class="order-header">
                         <span class="mesa">Mesa ${pedido.mesa}</span>
@@ -233,6 +431,7 @@ function carregarPedidosCozinha() {
                         <div class="order-details">
                             <h3>${pedido.nome}</h3>
                             <div class="quantity">Qtd: ${pedido.quantidade}</div>
+                            ${personalizacaoHTML}
                         </div>
                     </div>
                     <div class="order-footer">
@@ -330,9 +529,16 @@ function mostrarCarrinho() {
 
         const itemElement = document.createElement('div');
         itemElement.className = 'carrinho-item';
+
+        let personalizacaoHtml = '';
+        if (item.personalizacao) {
+            personalizacaoHtml = `<div class="item-personalizacao">${item.personalizacao}</div>`;
+        }
+
         itemElement.innerHTML = `
             <div class="item-info">
                 <span class="item-nome">${item.nome}</span>
+                ${personalizacaoHtml}
                 <span class="item-qtd">x${item.quantidade}</span>
                 <span class="item-preco">R$ ${itemTotal.toFixed(2)}</span>
             </div>

@@ -8,14 +8,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $item_id = $data['item_id'];
     $quantidade = $data['quantidade'];
 
-    // Remover a verificação de horário do backend
-    // assumindo que o frontend já fez essa verificação
+    // Adicionar personalização (se fornecida)
+    $personalizacao = isset($data['personalizacao']) ? $data['personalizacao'] : '';
 
-    $stmt = $pdo->prepare("INSERT INTO pedidos (mesa, item_id, quantidade) VALUES (?, ?, ?)");
-    $stmt->execute([$mesa, $item_id, $quantidade]);
+    $stmt = $pdo->prepare("INSERT INTO pedidos (mesa, item_id, quantidade, personalizacao) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$mesa, $item_id, $quantidade, $personalizacao]);
     echo json_encode(['success' => true]);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $stmt = $pdo->query("SELECT p.id, p.mesa, m.nome, m.imagem, p.quantidade, p.status, p.data_hora 
+    $stmt = $pdo->query("SELECT p.id, p.mesa, m.nome, m.imagem, p.quantidade, p.status, p.data_hora, p.personalizacao  
                          FROM pedidos p JOIN menu m ON p.item_id = m.id 
                          WHERE p.status != 'entregue'");
     $pedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
