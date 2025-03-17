@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio Digital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>Cardápio Digital - Mesa <span id="mesa">1</span></h1>
+        <p>Horário: <span id="horario"></span></p>
+    </header>
+
+    <div class="menu-container">
+        <!-- Pratos Nordestinos -->
+        <div class="menu-section" id="cardapio-dia">
+            <h2><i class="fas fa-sun"></i> Pratos Nordestinos</h2>
+
+            <div class="menu-item">
+                <img src="./img/baiao-de-dois.png" alt="Baião de Dois">
+                <div class="menu-item-info">
+                    <h3>Baião de Dois</h3>
+                    <p>Arroz, feijão-de-corda, carne seca e queijo coalho</p>
+                    <span class="price">R$ 25,00</span>
+                    <button class="order-btn" data-id="1" data-name="Baião de Dois" data-price="25.00"
+                        data-categoria="nordestino">
+                        <i class="fas fa-plus"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <img src="./img/macaxeira-e-carde-de-sol.png" alt="Carne de Sol com Macaxeira">
+                <div class="menu-item-info">
+                    <h3>Carne de Sol com Macaxeira</h3>
+                    <p>Carne de sol, macaxeira frita e manteiga de garrafa</p>
+                    <span class="price">R$ 30,00</span>
+                    <button class="order-btn" data-id="2" data-name="Carne de Sol" data-price="30.00">
+                        <i class="fas fa-plus"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cardápio Noite (Pizza) -->
+        <div class="menu-section hidden" id="cardapio-noite">
+            <h2><i class="fas fa-moon"></i> Pizzas</h2>
+
+            <div class="menu-item">
+                <img src="./img/pizza-margherita.png" alt="Pizza Margherita">
+                <div class="menu-item-info">
+                    <h3>Pizza Margherita</h3>
+                    <p>Molho de tomate, muçarela e manjericão</p>
+                    <span class="price">R$ 35,00</span>
+                    <button class="order-btn" data-id="3" data-name="Pizza Margherita" data-price="35.00"
+                        data-categoria="pizza">
+                        <i class="fas fa-plus"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <img src="./img/pizza-calabresa.png" alt="Pizza Calabresa">
+                <div class="menu-item-info">
+                    <h3>Pizza Calabresa</h3>
+                    <p>Calabresa, cebola e orégano</p>
+                    <span class="price">R$ 38,00</span>
+                    <button class="order-btn" data-id="4" data-name="Pizza Calabresa" data-price="38.00">
+                        <i class="fas fa-plus"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bebidas -->
+        <div class="menu-section" id="bebidas">
+            <h2><i class="fas fa-glass-cheers"></i> Bebidas</h2>
+
+            <div class="menu-item">
+                <img src="./img/coca-lata.png" alt="Coca-Cola">
+                <div class="menu-item-info">
+                    <h3>Coca-Cola</h3>
+                    <p>Refrigerante 350ml</p>
+                    <span class="price">R$ 5,00</span>
+                    <button class="order-btn" data-id="5" data-name="Coca-Cola" data-price="5.00"
+                        data-categoria="bebida">
+                        <i class="fas fa-plus"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <img src="./img/suco-caju.png" alt="Suco de Caju">
+                <div class="menu-item-info">
+                    <h3>Suco de Caju</h3>
+                    <p>Suco natural de caju</p>
+                    <span class="price">R$ 7,00</span>
+                    <button class="order-btn" data-id="6" data-name="Suco de Caju" data-price="7.00">
+                        <i class="fas fa-plus"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="send-order" onclick="enviarPedido()">
+        <i class="fas fa-paper-plane"></i> Enviar Pedido
+    </button>
+
+    <div class="cart-count" id="cart-count">0</div>
+
+    <!-- Carrinho Flutuante -->
+    <div id="carrinho-container" class="carrinho-container">
+        <div class="carrinho-header">
+            <h3><i class="fas fa-shopping-cart"></i> Seu Pedido</h3>
+            <button class="btn-fechar" onclick="toggleCarrinho()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div id="carrinho-itens" class="carrinho-itens">
+            <!-- Os itens do pedido serão carregados aqui via JavaScript -->
+            <p class="carrinho-vazio">Seu pedido está vazio</p>
+        </div>
+
+        <button class="btn-finalizar" onclick="enviarPedido()">
+            <i class="fas fa-paper-plane"></i> Enviar Pedido
+        </button>
+    </div>
+
+    <!-- Botão do Carrinho Flutuante -->
+    <div class="cart-count" id="cart-count" onclick="toggleCarrinho()">0</div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

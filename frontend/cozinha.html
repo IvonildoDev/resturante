@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cozinha - Gerenciamento de Pedidos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="cozinha.css"> <!-- Aqui está o link para o CSS específico da cozinha -->
+</head>
+
+<body class="cozinha-page">
+    <header class="kitchen-header">
+        <div class="logo">
+            <i class="fas fa-utensils"></i>
+            <h1>Gerenciamento de Pedidos</h1>
+        </div>
+        <div class="controls">
+            <button id="refresh-btn" class="btn btn-refresh">
+                <i class="fas fa-sync-alt"></i> Atualizar
+            </button>
+            <a href="index.html" class="btn btn-outline">
+                <i class="fas fa-home"></i> Voltar para o Menu
+            </a>
+        </div>
+    </header>
+
+    <main class="kitchen-container">
+        <div class="status-columns">
+            <div class="status-column" id="pendente-column">
+                <div class="column-header pendente">
+                    <h2><i class="fas fa-clock"></i> Pendentes</h2>
+                    <span class="pedido-count" id="pendente-count">0</span>
+                </div>
+                <div class="pedidos-list" id="pendente-list">
+                    <!-- Pedidos pendentes serão inseridos aqui -->
+                </div>
+            </div>
+
+            <div class="status-column" id="preparando-column">
+                <div class="column-header preparando">
+                    <h2><i class="fas fa-fire"></i> Preparando</h2>
+                    <span class="pedido-count" id="preparando-count">0</span>
+                </div>
+                <div class="pedidos-list" id="preparando-list">
+                    <!-- Pedidos em preparação serão inseridos aqui -->
+                </div>
+            </div>
+
+            <div class="status-column" id="pronto-column">
+                <div class="column-header pronto">
+                    <h2><i class="fas fa-check-circle"></i> Prontos</h2>
+                    <span class="pedido-count" id="pronto-count">0</span>
+                </div>
+                <div class="pedidos-list" id="pronto-list">
+                    <!-- Pedidos prontos serão inseridos aqui -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Área para mensagens de notificação -->
+    <div id="notification-area" class="notification-area"></div>
+
+    <script src="cozinha.js"></script>
+</body>
+
+</html>

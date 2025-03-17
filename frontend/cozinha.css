@@ -1,0 +1,298 @@
+/* Variáveis de cores e estilos */
+:root {
+    --primary: #ff6b35;
+    --secondary: #2c3e50;
+    --light-bg: #f8f9fa;
+    --dark-text: #333;
+    --light-text: #fff;
+    --border-light: #e0e0e0;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --pendente-color: #f39c12;
+    --preparando-color: #3498db;
+    --pronto-color: #27ae60;
+    --alert-color: #e74c3c;
+}
+
+/* Estilos gerais da página */
+body.cozinha-page {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--light-bg);
+    color: var(--dark-text);
+}
+
+/* Cabeçalho da cozinha */
+.kitchen-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--secondary);
+    color: var(--light-text);
+    padding: 15px 25px;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.kitchen-header .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.kitchen-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+}
+
+/* Botões */
+.btn {
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-refresh {
+    background-color: var(--primary);
+    color: var(--light-text);
+}
+
+.btn-refresh:hover {
+    background-color: #e05a29;
+}
+
+.btn-outline {
+    border: 1px solid var(--light-text);
+    background: transparent;
+    color: var(--light-text);
+    text-decoration: none;
+}
+
+.btn-outline:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Layout das colunas */
+.kitchen-container {
+    max-width: 1300px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+.status-columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+@media (max-width: 992px) {
+    .status-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+.status-column {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.column-header {
+    padding: 15px;
+    color: var(--light-text);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.column-header.pendente {
+    background-color: var(--pendente-color);
+}
+
+.column-header.preparando {
+    background-color: var(--preparando-color);
+}
+
+.column-header.pronto {
+    background-color: var(--pronto-color);
+}
+
+.column-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pedido-count {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.pedidos-list {
+    padding: 15px;
+    min-height: 300px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+/* Cards de pedidos */
+.pedido-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    margin-bottom: 15px;
+    transition: transform 0.3s ease, opacity 0.3s ease, height 0.3s ease;
+}
+
+.pedido-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.pedido-header {
+    background-color: #f1f1f1;
+    padding: 12px 15px;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mesa {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.tempo {
+    color: #666;
+}
+
+.pedido-content {
+    padding: 15px 20px;
+}
+
+.pedido-detalhes h3 {
+    font-size: 1.1rem;
+    margin: 0 0 8px 0;
+}
+
+.pedido-quantidade {
+    font-weight: 500;
+    color: #444;
+}
+
+.pedido-acoes {
+    padding: 10px 15px;
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Botões de status */
+.btn-status {
+    padding: 8px 12px;
+    border-radius: 5px;
+    color: var(--light-text);
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex: 1;
+}
+
+.btn-preparando {
+    background-color: var(--preparando-color);
+}
+
+.btn-preparando:hover {
+    background-color: #2980b9;
+}
+
+.btn-pronto {
+    background-color: var(--pronto-color);
+}
+
+.btn-pronto:hover {
+    background-color: #219653;
+}
+
+.btn-entregue {
+    background-color: var(--secondary);
+}
+
+.btn-entregue:hover {
+    background-color: #1e2b38;
+}
+
+/* Notificações */
+.notification-area {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.kitchen-notification {
+    background-color: #2c3e50;
+    color: white;
+    padding: 12px 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s ease;
+}
+
+.kitchen-notification.error {
+    background-color: #e74c3c;
+}
+
+/* Mensagens vazias */
+.empty-message {
+    padding: 30px 0;
+    text-align: center;
+    color: #999;
+    font-style: italic;
+}
+
+/* Animações e efeitos */
+.update-success {
+    background-color: #e8f5e9 !important;
+    transition: all 0.3s ease;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+.kitchen-notification {
+    animation: slideIn 0.3s, fadeOut 0.5s 2.5s forwards;
+}
