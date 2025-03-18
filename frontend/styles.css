@@ -765,3 +765,26 @@ header p {
 .mesa-info i {
     font-size: 1.1rem;
 }
+
+/* Estilos para detalhes da pizza */
+.pizza-detalhes {
+    display: flex;
+    gap: 15px;
+    margin: 8px 0;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.tamanho, .fatias {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.tamanho i {
+    font-size: 0.7rem;
+}
+
+.fatias i {
+    color: #ff6b35;
+}
