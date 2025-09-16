@@ -50,6 +50,25 @@ try {
             retornarErro('Falha ao registrar o pedido', 500);
         }
     } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        // Comandas abertas para o caixa: ?comandas_abertas=1
+        if (isset($_GET['comandas_abertas'])) {
+            $sql = "SELECT p.mesa, m.nome, m.preco, p.quantidade, p.personalizacao, p.data_hora, p.id
+                    FROM pedidos p
+                    JOIN menu m ON p.item_id = m.id
+                    WHERE p.status = 'entregue' AND p.pago = 0
+                    ORDER BY p.mesa, p.data_hora, p.id";
+            $stmt = $pdo->query($sql);
+            $pedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            // Agrupar por mesa
+            $comandas = [];
+            foreach ($pedidos as $pedido) {
+                $mesa = $pedido['mesa'];
+                if (!isset($comandas[$mesa])) $comandas[$mesa] = [];
+                $comandas[$mesa][] = $pedido;
+            }
+            echo json_encode($comandas);
+            exit;
+        }
         // Histórico completo se passado ?historico=1
         if (isset($_GET['historico'])) {
             $where = [];
@@ -84,6 +103,15 @@ try {
         echo json_encode($pedidos);
     } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
         $data = json_decode(file_get_contents('php://input'), true);
+
+        // Marcar todos os pedidos de uma mesa como pagos
+        if (isset($data['pagar_mesa'])) {
+            $mesa = (int)$data['pagar_mesa'];
+            $stmt = $pdo->prepare("UPDATE pedidos SET pago = 1 WHERE mesa = ? AND status = 'entregue' AND pago = 0");
+            $stmt->execute([$mesa]);
+            echo json_encode(['success' => true, 'message' => 'Comanda da mesa finalizada']);
+            exit;
+        }
 
         if (!isset($data['id']) || !isset($data['status'])) {
             retornarErro('Dados incompletos para atualização');

@@ -19,7 +19,20 @@ function checarAcesso(permitidos) {
     const funcoesCozinha = ['cozinha', 'auxiliar de cozinha', 'churrasqueiro', 'cozinheiro'];
     const permitido = permitidos.some(p => funcao === normalizarFuncao(p)) || funcoesCozinha.includes(funcao);
     if (!permitido) {
-        window.location.href = 'login.html';
+        // Alerta de permissão
+        alert('Usuário não tem permissão para esse acesso!');
+        // Redireciona para a página correta conforme a função
+        if (funcao === 'administrador') {
+            window.location.href = 'admin.html';
+        } else if (funcao === 'garcom') {
+            window.location.href = 'historico.html';
+        } else if (funcoesCozinha.includes(funcao)) {
+            window.location.href = 'cozinha.html';
+        } else if (funcao === 'caixa') {
+            window.location.href = 'caixa.html';
+        } else {
+            window.location.href = 'index.html';
+        }
         return;
     }
     // Exibe nome e função no topo, se desejar

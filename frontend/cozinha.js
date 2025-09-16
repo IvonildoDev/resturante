@@ -174,20 +174,17 @@ function criarCardPedido(pedido) {
             <button class="btn-status ${statusInfo.btnClass}" data-next-status="${statusInfo.next}">
                 <i class="fas fa-${statusInfo.icon}"></i> ${statusInfo.action}
             </button>
-            <button class="btn-imprimir" title="Imprimir Comanda"><i class="fas fa-print"></i> Imprimir</button>
         </div>
     `;
 
     // Adicionar event listener para o botão de alteração de status
     const btnStatus = pedidoCard.querySelector('.btn-status');
     btnStatus.addEventListener('click', () => {
+        // Se for status pendente (iniciar preparo), imprime comanda antes de atualizar
+        if (pedido.status === 'pendente') {
+            imprimirComanda(pedido);
+        }
         atualizarStatusPedido(pedido.id, btnStatus.dataset.nextStatus, pedidoCard);
-    });
-
-    // Botão de imprimir comanda
-    const btnImprimir = pedidoCard.querySelector('.btn-imprimir');
-    btnImprimir.addEventListener('click', () => {
-        imprimirComanda(pedido);
     });
 
     return pedidoCard;
