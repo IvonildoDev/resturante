@@ -1,3 +1,44 @@
+// Carrega o estoque para a tabela admin
+async function carregarEstoqueAdmin() {
+    const resp = await fetch('../backend/estoque.php');
+    const estoque = await resp.json();
+    const tbody = document.querySelector('#tabela-estoque-admin tbody');
+    tbody.innerHTML = '';
+    estoque.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${item.id}</td>
+            <td>${item.produto}</td>
+            <td>${item.quantidade}</td>
+            <td>${item.unidade || ''}</td>
+            <td>${item.validade || ''}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// Carrega o cardápio para a tabela admin
+async function carregarMenuAdmin() {
+    const resp = await fetch('../backend/menu.php');
+    const menu = await resp.json();
+    const tbody = document.querySelector('#tabela-menu tbody');
+    tbody.innerHTML = '';
+    menu.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${item.id}</td>
+            <td>${item.nome}</td>
+            <td>${item.categoria}</td>
+            <td>${item.preco}</td>
+            <td>${item.imagem || ''}</td>
+            <td>
+                <button onclick="editarItem(${item.id})"><i class='fas fa-edit'></i></button>
+                <button onclick="excluirItem(${item.id})"><i class='fas fa-trash'></i></button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
 // admin.js - Painel Administrativo
 const ADMIN_PASSWORD = 'admin123'; // Troque para uma senha forte depois!
 
@@ -7,7 +48,6 @@ function adminLogin() {
     if (senha === ADMIN_PASSWORD) {
         document.getElementById('admin-login').style.display = 'none';
         document.getElementById('admin-panel').style.display = 'block';
-        carregarResumoAdmin();
         carregarEstoqueAdmin();
         carregarRelatorioFinanceiro();
         carregarMenuAdmin();
@@ -108,13 +148,26 @@ async function carregarPedidosAdmin() {
     tbody.innerHTML = '';
     pedidos.slice(0, 20).forEach(p => {
         const tr = document.createElement('tr');
+        // Formatar data/hora para dd/mm/aaaa hh:mm:ss
+        let dataFormatada = '';
+        if (p.data_hora) {
+            const [data, hora] = p.data_hora.split(' ');
+            if (data) {
+                const [ano, mes, dia] = data.split('-');
+                dataFormatada = `${dia}/${mes}/${ano}`;
+                if (hora) dataFormatada += ' ' + hora;
+            } else {
+                dataFormatada = p.data_hora;
+            }
+        }
         tr.innerHTML = `
             <td>${p.id}</td>
             <td>${p.mesa}</td>
             <td>${p.nome}</td>
             <td>${p.quantidade}</td>
             <td>${p.status}</td>
-            <td>${p.data_hora}</td>
+            <td>${dataFormatada}</td>
+            <td>${p.personalizacao || ''}</td>
             <td><button onclick="excluirPedido(${p.id})"><i class='fas fa-trash'></i></button></td>
         `;
         tbody.appendChild(tr);

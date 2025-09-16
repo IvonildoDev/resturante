@@ -11,12 +11,14 @@
 </head>
 
 <body>
+    <div id="user-bar" class="user-bar"></div>
     <nav class="main-nav">
         <a href="index.html"><i class="fas fa-utensils"></i> Cardápio</a>
         <a href="cozinha.html"><i class="fas fa-fire"></i> Cozinha</a>
         <a href="historico.html"><i class="fas fa-history"></i> Histórico</a>
         <a href="admin.html"><i class="fas fa-user-cog"></i> Admin</a>
         <a href="estoque.html" class="active"><i class="fas fa-boxes"></i> Estoque</a>
+        <a href="caixa.html"><i class="fas fa-cash-register"></i> Caixa</a>
     </nav>
     <div class="estoque-container">
         <h1>Controle de Estoque</h1>
@@ -76,6 +78,10 @@
         </div>
     </div>
     <script src="estoque.js"></script>
+    <script src="protecao.js"></script>
+    <script>
+        checarAcesso(['administrador', 'cozinha', 'auxiliar de cozinha', 'churrasqueiro', 'cozinheiro']);
+    </script>
 </body>
 
 </html>

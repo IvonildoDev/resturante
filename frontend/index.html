@@ -12,11 +12,13 @@
 </head>
 
 <body>
+    <div id="user-bar" class="user-bar"></div>
     <nav class="main-nav">
         <a href="index.html"><i class="fas fa-utensils"></i> Cardápio</a>
         <a href="cozinha.html"><i class="fas fa-fire"></i> Cozinha</a>
         <a href="historico.html"><i class="fas fa-history"></i> Histórico</a>
         <a href="estoque.html"><i class="fas fa-boxes"></i> Estoque</a>
+        <a href="caixa.html"><i class="fas fa-cash-register"></i> Caixa</a>
     </nav>
     <header>
         <div class="header-content">
@@ -197,6 +199,10 @@
     </div>
 
     <script src="script.js"></script>
+    <script src="protecao.js"></script>
+    <script>
+        checarAcesso(['administrador', 'garcom', 'cozinha', 'auxiliar de cozinha', 'churrasqueiro', 'cozinheiro', 'caixa']);
+    </script>
 </body>
 
 </html>

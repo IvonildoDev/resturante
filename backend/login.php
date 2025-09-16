@@ -14,12 +14,13 @@ if (!$nome || !$matricula || !$senha) {
     exit;
 }
 
-$stmt = $pdo->prepare('SELECT * FROM usuarios WHERE nome = ? AND matricula = ? AND senha = ?');
+
+
+$stmt = $pdo->prepare('SELECT id, nome, matricula, funcao FROM usuarios WHERE nome COLLATE utf8mb4_general_ci = ? AND matricula = ? AND senha = ?');
 $stmt->execute([$nome, $matricula, $senha]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($user) {
-    // Retorna dados do usuário e função
     echo json_encode([
         'success' => true,
         'usuario' => [

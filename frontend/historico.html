@@ -11,11 +11,13 @@
 </head>
 
 <body>
+    <div id="user-bar" class="user-bar"></div>
     <nav class="main-nav">
         <a href="index.html"><i class="fas fa-utensils"></i> Cardápio</a>
         <a href="cozinha.html"><i class="fas fa-fire"></i> Cozinha</a>
         <a href="historico.html"><i class="fas fa-history"></i> Histórico</a>
         <a href="estoque.html"><i class="fas fa-boxes"></i> Estoque</a>
+        <a href="caixa.html"><i class="fas fa-cash-register"></i> Caixa</a>
     </nav>
     <div id="user-bar" class="user-bar"></div>
     <div class="historico-container">
@@ -54,6 +56,10 @@
         </table>
     </div>
     <script src="historico.js"></script>
+    <script src="protecao.js"></script>
+    <script>
+        checarAcesso(['garcom', 'administrador']);
+    </script>
     <script src="protecao.js"></script>
     <script>
         checarAcesso(['garcom', 'administrador']);

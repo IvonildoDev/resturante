@@ -14,15 +14,32 @@ document.getElementById('login-form').onsubmit = async function (e) {
         body: JSON.stringify({ nome, matricula, senha })
     });
     const data = await resp.json();
+    console.log('Resposta do backend:', data);
     if (data.success) {
         localStorage.setItem('usuario', JSON.stringify(data.usuario));
-        // Redireciona conforme função
-        if (data.usuario.funcao === 'administrador') {
+        // Normaliza função para evitar problemas de espaços, maiúsculas/minúsculas e acentuação
+        function normalizarFuncao(str) {
+            return (str || '')
+                .trim()
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, ''); // Remove acentos
+        }
+        const funcao = normalizarFuncao(data.usuario.funcao);
+        console.log('Função recebida:', funcao);
+        if (funcao === 'administrador') {
             window.location.href = 'admin.html';
-        } else if (data.usuario.funcao === 'garcom') {
+        } else if (funcao === 'garcom') {
             window.location.href = 'historico.html';
-        } else if (data.usuario.funcao === 'cozinha') {
+        } else if (
+            funcao === 'cozinha' ||
+            funcao === 'auxiliar de cozinha' ||
+            funcao === 'churrasqueiro' ||
+            funcao === 'cozinheiro'
+        ) {
             window.location.href = 'cozinha.html';
+        } else if (funcao === 'caixa') {
+            window.location.href = 'caixa.html';
         } else {
             erro.textContent = 'Função não reconhecida.';
         }
