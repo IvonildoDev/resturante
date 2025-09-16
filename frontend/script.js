@@ -94,7 +94,19 @@ const opcoesPersonalizacao = {
     ],
     'suco': [
         {
-            titulo: 'Adoçante (para sucos)',
+            titulo: 'Tipo de Suco',
+            tipo: 'radio',
+            opcoes: ['Maracujá', 'Manga', 'Goiaba', 'Abacaxi', 'Laranja', 'Acerola', 'Caju', 'Limão'],
+            padrao: 'Maracujá'
+        },
+        {
+            titulo: 'Tamanho',
+            tipo: 'radio',
+            opcoes: ['Copo', 'Meia Jarra', 'Jarra', 'Jarra 1L (R$ 20,00)'],
+            padrao: 'Copo'
+        },
+        {
+            titulo: 'Adoçante',
             tipo: 'radio',
             opcoes: ['Açúcar', 'Adoçante', 'Sem Açúcar'],
             padrao: 'Açúcar'
@@ -102,7 +114,7 @@ const opcoesPersonalizacao = {
         {
             titulo: 'Temperatura',
             tipo: 'radio',
-            opcoes: ['Gelada', 'Natural',],
+            opcoes: ['Gelada', 'Natural'],
             padrao: 'Gelada'
         }
     ],
@@ -130,6 +142,7 @@ const opcoesPersonalizacao = {
     ]
 };
 
+
 // Modificar a função de adicionarPedido para abrir o modal de personalização
 function adicionarPedido(id, nome, preco, categoria) {
     // Se for um item que precisa de personalização, abrir o modal
@@ -140,6 +153,24 @@ function adicionarPedido(id, nome, preco, categoria) {
         adicionarPedidoAoCarrinho(id, nome, preco, categoria);
     }
 }
+
+// Delegated event listener for all .order-btn buttons
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.order-btn').forEach(function (btn) {
+        // Only add if not already using inline onclick
+        if (!btn.hasAttribute('onclick')) {
+            btn.addEventListener('click', function () {
+                const id = btn.getAttribute('data-id');
+                const nome = btn.getAttribute('data-name');
+                const preco = btn.getAttribute('data-price');
+                const categoria = btn.getAttribute('data-categoria') || btn.getAttribute('data-category');
+                if (id && nome && preco) {
+                    adicionarPedido(Number(id), nome, Number(preco), categoria);
+                }
+            });
+        }
+    });
+});
 
 // Função para verificar se uma categoria tem opções de personalização
 function categoriaTemPersonalizacao(categoria) {
@@ -214,6 +245,41 @@ function abrirModalPersonalizacao(id, nome, preco, categoria) {
 
     // Mostrar o modal
     document.getElementById('modal-personalizacao').classList.add('show');
+
+    // Se for suco, atualizar preço ao trocar tamanho
+    if (categoria === 'suco') {
+        setTimeout(() => {
+            const opcoes = document.querySelectorAll('.opcao-grupo .opcao-titulo');
+            let tamanhoGrupoIdx = -1;
+            opcoes.forEach((el, idx) => {
+                if (el.textContent === 'Tamanho') tamanhoGrupoIdx = idx;
+            });
+            if (tamanhoGrupoIdx >= 0) {
+                const lista = opcoes[tamanhoGrupoIdx].nextElementSibling;
+                lista.querySelectorAll('.opcao-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        let precoBase = 7;
+                        let novoPreco = precoBase;
+                        if (item.textContent.includes('Meia Jarra')) novoPreco = 12;
+                        else if (item.textContent.includes('Jarra') && !item.textContent.includes('1L')) novoPreco = 16;
+                        else if (item.textContent.includes('1L')) novoPreco = 20;
+                        else if (item.textContent.includes('Copo')) novoPreco = precoBase;
+                        // Atualizar visual do preço no modal
+                        let precoSpan = document.getElementById('preco-personalizacao');
+                        if (!precoSpan) {
+                            precoSpan = document.createElement('span');
+                            precoSpan.id = 'preco-personalizacao';
+                            precoSpan.style.float = 'right';
+                            precoSpan.style.fontWeight = 'bold';
+                            document.querySelector('#item-nome-personalizar').parentElement.appendChild(precoSpan);
+                        }
+                        precoSpan.textContent = 'R$ ' + novoPreco.toFixed(2).replace('.', ',');
+                        itemAtualPersonalizacao.preco = novoPreco;
+                    });
+                });
+            }
+        }, 100);
+    }
 }
 
 // Função para fechar o modal de personalização
