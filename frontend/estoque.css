@@ -1,0 +1,224 @@
+/* Painel visual do cupom de retirada */
+.painel-cupom {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(44,62,80,0.18);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cupom-content {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 24px rgba(44,62,80,0.18);
+    padding: 32px 28px 24px 28px;
+    min-width: 320px;
+    max-width: 95vw;
+    position: relative;
+    font-family: 'Courier New', Courier, monospace;
+    color: #222;
+}
+.cupom-content pre {
+    background: #f8f8f8;
+    border-radius: 6px;
+    padding: 18px 16px;
+    font-size: 1.08em;
+    margin-bottom: 18px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    border: 1px solid #ececec;
+}
+.close-cupom {
+    position: absolute;
+    top: 10px; right: 18px;
+    font-size: 1.5em;
+    color: #e74c3c;
+    cursor: pointer;
+    font-weight: bold;
+}
+/* estoque.css */
+.estoque-container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: var(--bg-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 32px 24px;
+}
+.estoque-container h1 {
+    text-align: center;
+    color: var(--secondary-color);
+    margin-bottom: 30px;
+}
+.estoque-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    background: var(--bg-white);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(44,62,80,0.06);
+}
+.estoque-table th, .estoque-table td {
+    border: 1px solid #f0f0f0;
+    padding: 10px 14px;
+    text-align: left;
+}
+.estoque-table th {
+    background: var(--secondary-color);
+    color: #fff;
+    font-weight: 600;
+}
+.estoque-table tr:nth-child(even) td {
+    background: #f8f9fa;
+}
+.estoque-table tr:hover td {
+    background: #ffe5d1;
+}
+.btn-add {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 7px 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-add:hover {
+    background: #e05a29;
+}
+/* Modal */
+.modal {
+    position: fixed;
+    z-index: 1001;
+    left: 0; top: 0; width: 100vw; height: 100vh;
+    background: rgba(44,62,80,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal-content {
+    background: #fff;
+    padding: 30px 24px;
+    border-radius: 10px;
+    min-width: 320px;
+    max-width: 95vw;
+    box-shadow: 0 2px 12px rgba(44,62,80,0.13);
+    position: relative;
+}
+.close {
+    position: absolute;
+    top: 10px; right: 18px;
+    font-size: 1.5em;
+    color: #888;
+    cursor: pointer;
+}
+.modal-content label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+.modal-content input, .modal-content select {
+    width: 100%;
+    padding: 7px;
+    margin-top: 4px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+.modal-content button[type="submit"] {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 18px;
+    font-weight: 600;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.modal-content button[type="submit"]:hover {
+    background: #e05a29;
+}
+.estoque-carrinho {
+    position: fixed;
+    top: 90px;
+    right: 30px;
+    width: 320px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(44,62,80,0.13);
+    padding: 18px 18px 14px 18px;
+    z-index: 1002;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.estoque-carrinho h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.15em;
+    color: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+#carrinho-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px 0;
+    max-height: 180px;
+    overflow-y: auto;
+}
+#carrinho-lista li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.98em;
+}
+#carrinho-lista input[type="number"] {
+    width: 60px;
+    padding: 3px 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+.btn-finalizar {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 8px;
+}
+.btn-finalizar:hover {
+    background: #e05a29;
+}
+.carrinho-msg {
+    color: #219653;
+    font-size: 0.98em;
+    margin-top: 6px;
+    min-height: 18px;
+}
+@media (max-width: 700px) {
+    .estoque-container { padding: 10px; }
+    .estoque-table th, .estoque-table td { font-size: 13px; padding: 6px 4px; }
+    .modal-content { padding: 16px 6px; }
+}
+@media (max-width: 900px) {
+    .estoque-carrinho {
+        position: static;
+        width: 100%;
+        margin-bottom: 18px;
+        box-shadow: 0 1px 6px rgba(44,62,80,0.10);
+    }
+}

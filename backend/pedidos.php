@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 header('Content-Type: application/json');
 require 'config.php';
 
@@ -47,15 +50,36 @@ try {
             retornarErro('Falha ao registrar o pedido', 500);
         }
     } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
-        $stmt = $pdo->query("SELECT p.id, p.mesa, m.nome, m.imagem, p.quantidade, p.status, p.data_hora, p.personalizacao  
-                             FROM pedidos p JOIN menu m ON p.item_id = m.id 
-                             WHERE p.status != 'entregue'
-                             ORDER BY p.data_hora DESC");
-
+        // Histórico completo se passado ?historico=1
+        if (isset($_GET['historico'])) {
+            $where = [];
+            $params = [];
+            if (!empty($_GET['mesa'])) {
+                $where[] = 'p.mesa = ?';
+                $params[] = (int)$_GET['mesa'];
+            }
+            if (!empty($_GET['status'])) {
+                $where[] = 'p.status = ?';
+                $params[] = $_GET['status'];
+            }
+            if (!empty($_GET['data'])) {
+                $where[] = 'DATE(p.data_hora) = ?';
+                $params[] = $_GET['data'];
+            }
+            $sql = "SELECT p.id, p.mesa, m.nome, m.imagem, p.quantidade, p.status, p.data_hora, p.personalizacao  FROM pedidos p JOIN menu m ON p.item_id = m.id";
+            if ($where) {
+                $sql .= ' WHERE ' . implode(' AND ', $where);
+            }
+            $sql .= ' ORDER BY p.data_hora DESC';
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute($params);
+        } else {
+            // Padrão: só pedidos não entregues
+            $stmt = $pdo->query("SELECT p.id, p.mesa, m.nome, m.imagem, p.quantidade, p.status, p.data_hora, p.personalizacao  FROM pedidos p JOIN menu m ON p.item_id = m.id WHERE p.status != 'entregue' ORDER BY p.data_hora DESC");
+        }
         if ($stmt === false) {
             retornarErro('Erro ao buscar pedidos', 500);
         }
-
         $pedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($pedidos);
     } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
@@ -84,6 +108,15 @@ try {
         } else {
             retornarErro('Falha ao atualizar status', 500);
         }
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+        // Excluir pedido por id
+        if (!isset($_GET['id'])) {
+            retornarErro('ID do pedido não informado', 400);
+        }
+        $id = (int)$_GET['id'];
+        $stmt = $pdo->prepare('DELETE FROM pedidos WHERE id = ?');
+        $stmt->execute([$id]);
+        echo json_encode(['success' => true]);
     } else {
         // Método não suportado
         http_response_code(405);

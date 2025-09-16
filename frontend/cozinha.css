@@ -304,6 +304,37 @@ body.cozinha-page {
     background-color: #1e2b38;
 }
 
+/* Botão de impressão */
+.btn-imprimir {
+    padding: 8px 12px;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    background-color: var(--primary-color, #ff6b35);
+    margin-left: 10px;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-imprimir:hover {
+    background-color: #e05a29;
+}
+
+@media (max-width: 600px) {
+    .pedido-acoes {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .btn-imprimir {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
 /* Notificações */
 .notification-area {
     position: fixed;

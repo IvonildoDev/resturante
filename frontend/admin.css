@@ -1,0 +1,235 @@
+/* Filtro do relatório financeiro */
+.filtro-financeiro {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.filtro-financeiro label {
+    font-weight: 500;
+    color: #333;
+}
+.filtro-financeiro input[type="date"] {
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+/* Relatório financeiro */
+.relatorio-financeiro {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    box-shadow: 0 1px 6px rgba(44,62,80,0.06);
+    font-size: 1.08em;
+}
+.financeiro-total {
+    font-size: 1.18em;
+    margin-bottom: 10px;
+    color: #1d8348;
+}
+.financeiro-periodo ul {
+    margin: 0;
+    padding-left: 18px;
+}
+.financeiro-periodo li {
+    margin-bottom: 2px;
+}
+/* Destaque para produtos próximos do vencimento */
+.estoque-vencendo {
+    background: #fff3cd !important;
+    color: #856404;
+    font-weight: bold;
+}
+/* Painel Administrativo - admin.css */
+.admin-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    background: var(--bg-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 32px 24px;
+}
+.admin-container h1 {
+    text-align: center;
+    color: var(--secondary-color);
+    margin-bottom: 30px;
+}
+.admin-login {
+    max-width: 350px;
+    margin: 40px auto;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(44,62,80,0.07);
+    padding: 24px 18px;
+    text-align: center;
+}
+.admin-login input {
+    width: 90%;
+    padding: 8px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.admin-login button {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.admin-login button:hover {
+    background: #e05a29;
+}
+.login-erro {
+    color: #e74c3c;
+    margin-top: 10px;
+    font-size: 0.95em;
+}
+.admin-panel h2 {
+    margin-top: 30px;
+    color: var(--secondary-color);
+}
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    background: var(--bg-white);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(44,62,80,0.06);
+}
+.admin-table th, .admin-table td {
+    border: 1px solid #f0f0f0;
+    padding: 10px 14px;
+    text-align: left;
+}
+.admin-table th {
+    background: var(--secondary-color);
+    color: #fff;
+    font-weight: 600;
+}
+.admin-table tr:nth-child(even) td {
+    background: #f8f9fa;
+}
+.admin-table tr:hover td {
+    background: #ffe5d1;
+}
+.btn-add {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 7px 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-add:hover {
+    background: #e05a29;
+}
+/* Modal */
+.modal {
+    position: fixed;
+    z-index: 1001;
+    left: 0; top: 0; width: 100vw; height: 100vh;
+    background: rgba(44,62,80,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal-content {
+    background: #fff;
+    padding: 30px 24px;
+    border-radius: 10px;
+    min-width: 320px;
+    max-width: 95vw;
+    box-shadow: 0 2px 12px rgba(44,62,80,0.13);
+    position: relative;
+}
+.close {
+    position: absolute;
+    top: 10px; right: 18px;
+    font-size: 1.5em;
+    color: #888;
+    cursor: pointer;
+}
+.modal-content label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+.modal-content input, .modal-content textarea, .modal-content select {
+    width: 100%;
+    padding: 7px;
+    margin-top: 4px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+.modal-content button[type="submit"] {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 18px;
+    font-weight: 600;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.modal-content button[type="submit"]:hover {
+    background: #e05a29;
+}
+.admin-resumo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-bottom: 32px;
+    justify-content: center;
+}
+.resumo-card {
+    background: var(--bg-light);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(44,62,80,0.07);
+    padding: 22px 32px;
+    min-width: 180px;
+    text-align: center;
+    color: var(--secondary-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+.resumo-card .resumo-valor {
+    font-size: 2.1em;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+.resumo-card .resumo-label {
+    font-size: 1.1em;
+    color: #555;
+}
+.resumo-card i {
+    font-size: 1.5em;
+    margin-bottom: 6px;
+    color: var(--primary-color);
+}
+@media (max-width: 700px) {
+    .admin-container { padding: 10px; }
+    .admin-table th, .admin-table td { font-size: 13px; padding: 6px 4px; }
+    .modal-content { padding: 16px 6px; }
+    .admin-resumo {
+        flex-direction: column;
+        gap: 12px;
+    }
+    .resumo-card {
+        min-width: 0;
+        width: 100%;
+    }
+}

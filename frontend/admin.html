@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <nav class="main-nav">
+        <a href="index.html"><i class="fas fa-utensils"></i> Cardápio</a>
+        <a href="cozinha.html"><i class="fas fa-fire"></i> Cozinha</a>
+        <a href="historico.html"><i class="fas fa-history"></i> Histórico</a>
+        <a href="admin.html" class="active"><i class="fas fa-user-cog"></i> Admin</a>
+        <a href="estoque.html"><i class="fas fa-boxes"></i> Estoque</a>
+    </nav>
+    <div class="admin-container">
+        <div id="admin-resumo" class="admin-resumo" style="display:none;"></div>
+        <h1>Painel Administrativo</h1>
+        <div id="admin-login" class="admin-login">
+            <h2>Login do Administrador</h2>
+            <input type="password" id="admin-password" placeholder="Senha">
+            <button onclick="adminLogin()"><i class="fas fa-sign-in-alt"></i> Entrar</button>
+            <div id="login-erro" class="login-erro"></div>
+        </div>
+        <div id="admin-panel" class="admin-panel" style="display:none;">
+            <h2>Relatório Financeiro</h2>
+            <div class="filtro-financeiro">
+                <label>De: <input type="date" id="filtro-fin-data-inicio"></label>
+                <label>Até: <input type="date" id="filtro-fin-data-fim"></label>
+                <button class="btn-add" onclick="carregarRelatorioFinanceiro()"><i class="fas fa-search"></i>
+                    Filtrar</button>
+            </div>
+            <div id="relatorio-financeiro" class="relatorio-financeiro"></div>
+            <h2>Estoque Atual</h2>
+            <table class="admin-table" id="tabela-estoque-admin">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Produto</th>
+                        <th>Quantidade</th>
+                        <th>Unidade</th>
+                        <th>Validade</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <h2>Gerenciar Cardápio</h2>
+            <button onclick="abrirModalItem()" class="btn-add"><i class="fas fa-plus"></i> Novo Item</button>
+            <table class="admin-table" id="tabela-menu">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Categoria</th>
+                        <th>Preço</th>
+                        <th>Imagem</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <h2>Pedidos Recentes</h2>
+            <table class="admin-table" id="tabela-pedidos">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Mesa</th>
+                        <th>Item</th>
+                        <th>Quantidade</th>
+                        <th>Status</th>
+                        <th>Data/Hora</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <!-- Modal para editar/adicionar item -->
+        <div id="modal-item" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close" onclick="fecharModalItem()">&times;</span>
+                <h3 id="modal-titulo">Novo Item</h3>
+                <form id="form-item">
+                    <input type="hidden" id="item-id">
+                    <label>Nome: <input type="text" id="item-nome" required></label>
+                    <label>Categoria:
+                        <select id="item-categoria" required>
+                            <option value="nordestino">Nordestino</option>
+                            <option value="pizza">Pizza</option>
+                            <option value="bebida">Bebida</option>
+                            <option value="sobremesa">Sobremesa</option>
+                        </select>
+                    </label>
+                    <label>Preço: <input type="number" id="item-preco" step="0.01" required></label>
+                    <label>Imagem: <input type="text" id="item-imagem" placeholder="nome-do-arquivo.png"></label>
+                    <label>Descrição: <textarea id="item-descricao"></textarea></label>
+                    <button type="submit"><i class="fas fa-save"></i> Salvar</button>
+                </form>
+            </div>
+        </div>
+        <div id="user-bar" class="user-bar"></div>
+    </div>
+    <script src="admin.js"></script>
+    <script src="protecao.js"></script>
+    <script>
+        checarAcesso(['administrador']);
+    </script>
+</body>
+
+</html>

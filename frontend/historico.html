@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico de Pedidos</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="historico.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <nav class="main-nav">
+        <a href="index.html"><i class="fas fa-utensils"></i> Cardápio</a>
+        <a href="cozinha.html"><i class="fas fa-fire"></i> Cozinha</a>
+        <a href="historico.html"><i class="fas fa-history"></i> Histórico</a>
+        <a href="estoque.html"><i class="fas fa-boxes"></i> Estoque</a>
+    </nav>
+    <div id="user-bar" class="user-bar"></div>
+    <div class="historico-container">
+        <h1 class="historico-title">Histórico de Pedidos</h1>
+        <div class="filtros">
+            <label>Mesa: <input type="number" id="filtro-mesa" min="1" style="width:60px"></label>
+            <label>Status:
+                <select id="filtro-status">
+                    <option value="">Todos</option>
+                    <option value="pendente">Pendente</option>
+                    <option value="preparando">Preparando</option>
+                    <option value="pronto">Pronto</option>
+                    <option value="entregue">Entregue</option>
+                </select>
+            </label>
+            <label>Data:
+                <input type="date" id="filtro-data">
+            </label>
+            <button onclick="carregarHistorico()">Filtrar</button>
+        </div>
+        <table class="historico-table" id="tabela-historico">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Mesa</th>
+                    <th>Item</th>
+                    <th>Quantidade</th>
+                    <th>Status</th>
+                    <th>Data/Hora</th>
+                    <th>Personalização</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Linhas do histórico -->
+            </tbody>
+        </table>
+    </div>
+    <script src="historico.js"></script>
+    <script src="protecao.js"></script>
+    <script>
+        checarAcesso(['garcom', 'administrador']);
+    </script>
+</body>
+
+</html>

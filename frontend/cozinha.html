@@ -13,6 +13,12 @@
 </head>
 
 <body class="cozinha-page">
+    <nav class="main-nav">
+        <a href="index.html"><i class="fas fa-utensils"></i> Cardápio</a>
+        <a href="cozinha.html"><i class="fas fa-fire"></i> Cozinha</a>
+        <a href="historico.html"><i class="fas fa-history"></i> Histórico</a>
+        <a href="estoque.html"><i class="fas fa-boxes"></i> Estoque</a>
+    </nav>
     <header class="kitchen-header">
         <div class="logo">
             <i class="fas fa-utensils"></i>
@@ -33,6 +39,8 @@
             </a>
         </div>
     </header>
+
+    <div id="user-bar" class="user-bar"></div>
 
     <main class="kitchen-container">
         <div class="status-columns">
@@ -72,6 +80,10 @@
     <div id="notification-area" class="notification-area"></div>
 
     <script src="cozinha.js"></script>
+    <script src="protecao.js"></script>
+    <script>
+        checarAcesso(['cozinha', 'administrador']);
+    </script>
 </body>
 
 </html>

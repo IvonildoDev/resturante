@@ -1,0 +1,117 @@
+/* CSS exclusivo para histórico de pedidos */
+:root {
+    --primary-color: #ff6b35;
+    --secondary-color: #2c3e50;
+    --text-dark: #333333;
+    --text-light: #ffffff;
+    --bg-light: #f8f9fa;
+    --bg-white: #ffffff;
+    --border-radius: 10px;
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+.historico-container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: var(--bg-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 32px 24px;
+}
+
+.historico-title {
+    text-align: center;
+    margin-bottom: 24px;
+    color: var(--secondary-color);
+    letter-spacing: 1px;
+}
+
+.filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+    justify-content: center;
+    background: var(--bg-light);
+    border-radius: 8px;
+    padding: 12px 0;
+    box-shadow: 0 1px 4px rgba(44,62,80,0.04);
+}
+
+.filtros label {
+    font-weight: 500;
+    color: var(--secondary-color);
+}
+
+.filtros input,
+.filtros select {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 4px 8px;
+    font-size: 1em;
+    background: #fff;
+    color: var(--text-dark);
+    margin-left: 4px;
+}
+
+.filtros button {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.filtros button:hover {
+    background: #e05a29;
+}
+
+.historico-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-white);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(44,62,80,0.06);
+}
+
+.historico-table th,
+.historico-table td {
+    border: 1px solid #f0f0f0;
+    padding: 10px 14px;
+    text-align: left;
+}
+
+.historico-table th {
+    background: var(--secondary-color);
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.historico-table tr:nth-child(even) td {
+    background: #f8f9fa;
+}
+
+.historico-table tr:hover td {
+    background: #ffe5d1;
+}
+
+@media (max-width: 700px) {
+    .historico-container {
+        padding: 10px;
+    }
+    .historico-table th,
+    .historico-table td {
+        font-size: 13px;
+        padding: 6px 4px;
+    }
+}
+
+@media (max-width: 500px) {
+    .filtros { flex-direction: column; gap: 8px; }
+    .historico-title { font-size: 1.2em; }
+}

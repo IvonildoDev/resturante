@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estoque</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="estoque.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <nav class="main-nav">
+        <a href="index.html"><i class="fas fa-utensils"></i> Cardápio</a>
+        <a href="cozinha.html"><i class="fas fa-fire"></i> Cozinha</a>
+        <a href="historico.html"><i class="fas fa-history"></i> Histórico</a>
+        <a href="admin.html"><i class="fas fa-user-cog"></i> Admin</a>
+        <a href="estoque.html" class="active"><i class="fas fa-boxes"></i> Estoque</a>
+    </nav>
+    <div class="estoque-container">
+        <h1>Controle de Estoque</h1>
+        <button class="btn-add" onclick="abrirModalEstoque()"><i class="fas fa-plus"></i> Novo Produto</button>
+        <div class="estoque-carrinho" id="estoque-carrinho">
+            <h3><i class="fas fa-shopping-cart"></i> Carrinho de Retirada</h3>
+            <ul id="carrinho-lista"></ul>
+            <button id="finalizar-carrinho" class="btn-finalizar" style="display:none;"><i class="fas fa-check"></i>
+                Finalizar Retirada</button>
+            <div id="carrinho-msg" class="carrinho-msg"></div>
+        </div>
+        <div id="painel-cupom" class="painel-cupom" style="display:none;">
+            <div class="cupom-content">
+                <span class="close-cupom"
+                    onclick="document.getElementById('painel-cupom').style.display='none'">&times;</span>
+                <pre id="cupom-relatorio"></pre>
+                <button class="btn-add" onclick="imprimirCupom()"><i class="fas fa-print"></i> Imprimir</button>
+                <button class="btn-add"
+                    onclick="document.getElementById('painel-cupom').style.display='none'">Fechar</button>
+            </div>
+        </div>
+        <table class="estoque-table" id="tabela-estoque">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Produto</th>
+                    <th>Validade</th>
+                    <th>Quantidade</th>
+                    <th>Unidade</th>
+                    <th>Ações</th>
+                    <th>Retirar</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <!-- Modal para adicionar/editar produto -->
+        <div id="modal-estoque" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close" onclick="fecharModalEstoque()">&times;</span>
+                <h3 id="modal-titulo-estoque">Novo Produto</h3>
+                <form id="form-estoque">
+                    <input type="hidden" id="estoque-id">
+                    <label>Produto: <input type="text" id="estoque-produto" required></label>
+                    <label>Validade: <input type="date" id="estoque-validade" required></label>
+                    <label>Quantidade: <input type="number" id="estoque-quantidade" step="0.01" required></label>
+                    <label>Unidade:
+                        <select id="estoque-unidade" required>
+                            <option value="kg">Kg</option>
+                            <option value="litros">Litros</option>
+                            <option value="unidade">Unidade</option>
+                            <option value="caixa">Caixa</option>
+                        </select>
+                    </label>
+                    <button type="submit"><i class="fas fa-save"></i> Salvar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="estoque.js"></script>
+</body>
+
+</html>

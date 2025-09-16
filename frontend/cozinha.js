@@ -174,6 +174,7 @@ function criarCardPedido(pedido) {
             <button class="btn-status ${statusInfo.btnClass}" data-next-status="${statusInfo.next}">
                 <i class="fas fa-${statusInfo.icon}"></i> ${statusInfo.action}
             </button>
+            <button class="btn-imprimir" title="Imprimir Comanda"><i class="fas fa-print"></i> Imprimir</button>
         </div>
     `;
 
@@ -183,7 +184,50 @@ function criarCardPedido(pedido) {
         atualizarStatusPedido(pedido.id, btnStatus.dataset.nextStatus, pedidoCard);
     });
 
+    // Botão de imprimir comanda
+    const btnImprimir = pedidoCard.querySelector('.btn-imprimir');
+    btnImprimir.addEventListener('click', () => {
+        imprimirComanda(pedido);
+    });
+
     return pedidoCard;
+}
+
+// Função para imprimir a comanda do pedido
+function imprimirComanda(pedido) {
+    const dataHora = new Date(pedido.data_hora);
+    const dataFormatada = dataHora.toLocaleDateString();
+    const horaFormatada = dataHora.toLocaleTimeString();
+    const win = window.open('', '', 'width=400,height=600');
+    win.document.write(`
+        <html>
+        <head>
+            <title>Comanda do Pedido</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 24px; }
+                h2 { text-align: center; margin-bottom: 18px; }
+                .comanda-info { margin-bottom: 10px; font-size: 1.1em; }
+                .comanda-label { font-weight: bold; }
+                .comanda-personalizacao { margin-top: 10px; }
+                .comanda-footer { margin-top: 30px; text-align: center; font-size: 0.95em; color: #888; }
+            </style>
+        </head>
+        <body>
+            <h2>Comanda de Pedido</h2>
+            <div class="comanda-info"><span class="comanda-label">Mesa:</span> ${pedido.mesa}</div>
+            <div class="comanda-info"><span class="comanda-label">Item:</span> ${pedido.nome}</div>
+            <div class="comanda-info"><span class="comanda-label">Quantidade:</span> ${pedido.quantidade}</div>
+            <div class="comanda-info"><span class="comanda-label">Status:</span> ${pedido.status}</div>
+            <div class="comanda-info"><span class="comanda-label">Data/Hora:</span> ${dataFormatada} ${horaFormatada}</div>
+            ${pedido.personalizacao && pedido.personalizacao.trim() !== '' ? `<div class="comanda-personalizacao"><span class="comanda-label">Personalização:</span> ${pedido.personalizacao}</div>` : ''}
+            <div class="comanda-footer">Restaurante - ${new Date().getFullYear()}</div>
+        </body>
+        </html>
+    `);
+    win.document.close();
+    win.focus();
+    win.print();
+    setTimeout(() => win.close(), 1000);
 }
 
 // Função para atualizar o status de um pedido
